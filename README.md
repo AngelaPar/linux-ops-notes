@@ -1,4 +1,4 @@
-i# Linux Ops Notes
+# Linux Ops Notes
 My runbook from learning more about Linux ops. Written by me, no AI.
 
 ## Day 1: November 18, 2026, 10:29pm
