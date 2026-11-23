@@ -23,6 +23,12 @@ A web request travels down these layers. Find the FIRST layer that's broken. Rea
 
 **Before editing ANY config:** `sudo cp <file> <file>.bak` (undo = `sudo cp <file>.bak <file>`) -> edit -> test (`nginx -t` / `apache2ctl -t`) -> reload -> curl
 
+# Connect
+- `ssh [options] <user>@<host>` - host = IP or name; first time, type `yes` to trust it; `exit` to leave
+- `-i <keyfile>` key login · `-p <port>` non-default port (default 22) · `-v` verbose if it won't connect
+- e.g. `ssh -i mykey.pem -p 2222 admin@203.0.113.5`
+- Two ways in: **key file** (a file used as a key to access the server) -> `ssh -i <keyfile> user@host` · **password** -> `ssh user@host`, then type it
+
 # Reproduce first
 - `hostname` / `whoami` / `cat /etc/os-release` - which box, which user, which Linux
 - `df -h` - always, 5 seconds, catches a full disk before you waste time
