@@ -1,3 +1,28 @@
+# The ladder
+A web request travels down these layers. Find the FIRST layer that's broken. Read the log before changing anything.
+
+```
+ 1 NAME        does the name point here?      getent hosts <site>             /etc/hosts
+ 2 NETWORK     can packets get in?            curl -v -m 5 (hangs = dropped)  sudo iptables -L INPUT -n --line-numbers
+ 3 SERVICE     is the web server running?     systemctl status nginx|apache2  sudo ss -tlnp
+ 4 WEB SERVER  config valid? right site?      sudo nginx -t | apache2ctl -t   /etc/nginx|apache2/sites-enabled/
+ 5 APP         is PHP-FPM up? right socket?   systemctl status php*-fpm       ls /run/php/
+ 6 FILES       can www-data read it?          ls -l ; namei -l <path>         DocumentRoot / root folder
+ 7 DATABASE    up? right password?            systemctl status mariadb        app config file ; sudo mariadb
+ 8 RESOURCES   disk / CPU / memory / limits   df -h ; top ; free -h           systemctl cat <svc> (LimitNOFILE)
+ 9 SCHEDULED   keeps coming back?             ls /etc/cron.d ; systemctl list-timers
+```
+
+**Logs (read these first):**
+- `tail -n 30 /var/log/nginx/error.log` or `/var/log/apache2/error.log` (a site can have its OWN log: check `ErrorLog` in its config)
+- `journalctl -u <svc> -n 30 --no-pager` (why a service won't start)
+
+**Status code -> layer:** hangs/timeout -> 1 or 2 · refused -> 3 · 404 -> 4 or 6 · 403 -> 4 or 6 · 502 -> 5 · 500 -> 6, 7 or 8 (read the log) · 200 but wrong page -> 3 or 4
+
+**Always:** reproduce -> walk the ladder -> read the log -> change ONE thing -> prove it (curl again)
+
+**Before editing ANY config:** `sudo cp <file> <file>.bak` (undo = `sudo cp <file>.bak <file>`) -> edit -> test (`nginx -t` / `apache2ctl -t`) -> reload -> curl
+
 # Reproduce first
 - `hostname` / `whoami` / `cat /etc/os-release` - which box, which user, which Linux
 - `df -h` - always, 5 seconds, catches a full disk before you waste time
@@ -37,6 +62,8 @@
 - `sudo du -sh /*` -> zoom in -> ask before deleting
 - `sudo mv /etc/cron.d/<file> /root/<file>.disabled` - disable a cron job, keep evidence
 - fix `/etc/hosts` -> `127.0.0.1 site.test www.site.test`
+- `sudo lsof <file>` - who has this file open / who's writing to it -> `kill <PID>` -> `tail -n 3 <file>` twice to prove it stopped
+- `ps aux | grep -i <word>` - find a process by name (`ps auxww` shows full commands, `ps auxf` cuts them off)
 
 # What is it akin to / elaborations
 - reload vs restart - reload when Chrome is open vs restart when Chrome is closed 
