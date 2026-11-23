@@ -83,6 +83,7 @@ A web request travels down these layers. Find the FIRST layer that's broken. Rea
 | PHP | php-fpm socket | often `mod_php` (no socket) or php-fpm |
 
 # If it's in Docker
+- Dockerfile (blueprint) -> `docker build` -> image (the product) -> `docker run` -> container (the product in use). One image can run as many containers
 - `docker ps -a` - what's running, what's stopped
 - `docker logs <name>` - that container's logs
 - `docker restart <name>`
