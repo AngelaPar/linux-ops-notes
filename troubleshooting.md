@@ -37,6 +37,13 @@ A web request travels down these layers. Find the FIRST layer that's broken. Rea
 - `curl -s http://site.test` - read the page (a 200 can still be broken)
 - `systemctl status nginx apache2` - which web server is it?
 
+# DNS + testing the server directly
+- `dig <domain> A +short` - IPv4 it points to (private 10.x / 172.16-31.x / 192.168.x = wrong for a public site)
+- `dig <domain> AAAA +short` - IPv6 (blank = none) · `dig <domain> NS +short` - who runs the DNS
+- `curl -v --resolve <domain>:443:<server-ip> https://<domain>/` - skip DNS, hit that exact server
+- `-k` ignores cert errors (diagnose only) · use `:80` + `http://` to test plain HTTP
+- **The logic:** if `dig` shows the wrong IP but `curl --resolve` to the right IP works, the server's fine and **the DNS record is wrong**
+
 # Symptom -> first check
 | Symptom | Layer | First command |
 |---|---|---|
