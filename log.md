@@ -8,3 +8,9 @@ Ops things I've learned while tinkering with my own projects. A work in progress
 ## Day 2: November 20, 2026, 10:46am
 - vim shortcuts (writing my texts so far with vim to get used to the commands). Went through vimtutor and saved the keys I actually use in [vim.md](vim.md).
 - 9:58pm: fixed 4 nginx config bugs in 38s using vim.
+
+## Day xx: November 25, 2026, 9:35pm
+
+Haven't been writing on these logs during the past few days because I was prioritising break-fix servers. Just installed fedora linux today instead of just practicing through a terminal to get used to the graphic interface. Spent most of the day focusing more on the theory bits rather than on actual troubleshooting. Covered common directories such as /, /bin, /etc, /home, /opt, /usr, /var. Applications that are not part of the base OS are typically installed in either usr/local, or /opt. Useful to keep these directories in mind when encountering or investigating disk space-type errors.
+
+Also, while I was fiddling w my own servers over the past few days I realised there are lowk a lot of vulnerabilities that could've been easily exploited, along with features that aren't enabled as  default (even though I assumed they would be). That absolutely baffled me. Scary unknown unknowns, but also it serves as a reminder that infrastructure n ops work is crucial for knowing what parts of your server can be exploited.  
